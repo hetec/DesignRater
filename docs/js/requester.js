@@ -66,7 +66,7 @@ var DesignRequests = function (requester) {
 
   var _init = function _init(config) {
     config = config || {};
-    _baseUrl = config.url || 'http://api.spreadshirt.net/api/v1/shops';
+    _baseUrl = config.url || 'https://api.spreadshirt.net/api/v1/shops';
     _shopId = config.shopId || '205909';
     _limit = config.limit || 5;
   };
