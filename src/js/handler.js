@@ -62,8 +62,9 @@ const ViewDesigns = (function(designRequests, renderer, rating){
 
   const _likeDesign = () => {
     likeBtn.addEventListener('click', () => {
-      rating.like(currentQuery, currentDesigns[currentPos - 1].name);
-      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].name);
+      console.log(currentDesigns[currentPos - 1]);
+      rating.like(currentQuery, currentDesigns[currentPos - 1].id);
+      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].id);
       _showRatingBtn();
       renderer.hide(ratingBtns);
       renderer.show(choosenRating);
@@ -72,8 +73,8 @@ const ViewDesigns = (function(designRequests, renderer, rating){
 
   const _dislikeDesign = () => {
     document.getElementById('dislike').addEventListener('click', () => {
-      rating.dislike(currentQuery, currentDesigns[currentPos - 1].name);
-      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].name);
+      rating.dislike(currentQuery, currentDesigns[currentPos - 1].id);
+      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].id);
       _showRatingBtn();
       renderer.hide(ratingBtns);
       renderer.show(choosenRating);

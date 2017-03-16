@@ -13,6 +13,7 @@ const RatingService = (function(){
   const _addQuery = (query) => {
     if(!_queryExists(query)) {
       _ratingState[query] = {
+        name: '',
         negative: [],
         positive: []
       }
@@ -56,6 +57,8 @@ const RatingService = (function(){
 
   const _like = (query, design) => {
     if((!_designRated(query, design)) && _queryExists(query)) {
+      console.log('design', design);
+
       _ratingState[query][_positiveRatesArrayName].push(design);
     }
   }

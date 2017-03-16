@@ -93,7 +93,7 @@ var RatingService = function () {
   var _addQuery = function _addQuery(query) {
     if (!_queryExists(query)) {
       _ratingState[query] = {
-
+        name: '',
         negative: [],
         positive: []
       };
@@ -135,6 +135,8 @@ var RatingService = function () {
 
   var _like = function _like(query, design) {
     if (!_designRated(query, design) && _queryExists(query)) {
+      console.log('design', design);
+
       _ratingState[query][_positiveRatesArrayName].push(design);
     }
   };
@@ -384,8 +386,9 @@ var ViewDesigns = function (designRequests, renderer, rating) {
 
   var _likeDesign = function _likeDesign() {
     likeBtn.addEventListener('click', function () {
-      rating.like(currentQuery, currentDesigns[currentPos - 1].name);
-      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].name);
+      console.log(currentDesigns[currentPos - 1]);
+      rating.like(currentQuery, currentDesigns[currentPos - 1].id);
+      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].id);
       _showRatingBtn();
       renderer.hide(ratingBtns);
       renderer.show(choosenRating);
@@ -394,8 +397,8 @@ var ViewDesigns = function (designRequests, renderer, rating) {
 
   var _dislikeDesign = function _dislikeDesign() {
     document.getElementById('dislike').addEventListener('click', function () {
-      rating.dislike(currentQuery, currentDesigns[currentPos - 1].name);
-      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].name);
+      rating.dislike(currentQuery, currentDesigns[currentPos - 1].id);
+      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].id);
       _showRatingBtn();
       renderer.hide(ratingBtns);
       renderer.show(choosenRating);
