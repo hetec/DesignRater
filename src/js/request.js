@@ -13,7 +13,12 @@ const Requester = (function() {
   }
 
   const _doRequest = (method, endpoint, success, failure) => {
-    const XHR = new XMLHttpRequest();
+    let XHR;
+    if (window.XMLHttpRequest) {
+      XHR = new XMLHttpRequest();
+    } else {
+        XHR = new ActiveXObject("Microsoft.XMLHTTP");
+    }
     XHR.onreadystatechange = () => {
       if(XHR.readyState === 4){
         if(XHR.status === 200){

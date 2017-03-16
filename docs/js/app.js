@@ -15,7 +15,12 @@ var Requester = function () {
   };
 
   var _doRequest = function _doRequest(method, endpoint, success, failure) {
-    var XHR = new XMLHttpRequest();
+    var XHR = void 0;
+    if (window.XMLHttpRequest) {
+      XHR = new XMLHttpRequest();
+    } else {
+      XHR = new ActiveXObject("Microsoft.XMLHTTP");
+    }
     XHR.onreadystatechange = function () {
       if (XHR.readyState === 4) {
         if (XHR.status === 200) {

@@ -50,6 +50,7 @@ gulp.task('mv-js', () => {
         './src/js/handler.js',
         './src/js/main.js',
         './src/js/requester.js',
+        './src/js/main.js'
       ])
       .pipe(concat('app.js'))
       .pipe(babel({
