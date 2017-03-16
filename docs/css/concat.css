@@ -55,10 +55,6 @@ h1 {
 
 /* Search section */
 
-section.searchBar {
-  border-bottom: 1px solid #AAA;
-}
-
 section.searchBar .searchBarWrapper {
   width: 100%;
   position: relative;
@@ -73,8 +69,8 @@ section.searchBar input {
   border: none;
   border-top: solid 5px rgb(0,184,169);
   text-align: center;
-  letter-spacing: 0.2em;
-  font-size: 1.5em;
+  letter-spacing: 0.1em;
+  font-size: 1.4em;
 }
 
 section.searchBar input:focus {
@@ -240,10 +236,11 @@ section.searchBar .searchBtn:hover {
   right: 30px;
   top: 20px;
   font-size: 2em;
+  color: #AAA;
 }
 
 .closeBtn:active, .closeBtn:visited {
-  color: black;
+  color: #AAA;
 }
 
 .closeBtn:hover {

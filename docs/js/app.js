@@ -334,16 +334,17 @@ var ViewDesigns = function (designRequests, renderer, rating) {
   var currentPos = 1;
 
   // Dom elements
-  var searchField = document.getElementById('sendSearch');
+  var searchBtn = document.getElementById('sendSearch');
   var likeBtn = document.getElementById('like');
   var dislikeBtn = document.getElementById('dislike');
-  var nextBtn = document.getElementById("next");
+  var nextBtn = document.getElementById('next');
   var summeryContainer = document.getElementById('ratingSummeryContainer');
   var designArea = document.getElementById('currentDesign');
   var ratingBtns = document.getElementById('ratingBtns');
   var choosenRating = document.getElementById('choosenRating');
   var finishRatingBtn = document.getElementById('finishRating');
   var errorMsg = document.getElementById('errorMsg');
+  var searchField = document.getElementById('query');
   var _logo = document.getElementById('logo');
 
   var _handleAllQuery = function _handleAllQuery(query) {
@@ -354,21 +355,32 @@ var ViewDesigns = function (designRequests, renderer, rating) {
   };
 
   var _searchDesign = function _searchDesign() {
-    searchField.addEventListener('click', function () {
-      offset = 0;
-      currentQuery = _handleAllQuery(document.getElementById("query").value);
-      rating.addQuery(currentQuery);
-      DesignRequests.getDesignsForQuery(currentQuery, offset, function (result) {
-        renderer.hide(_logo);
-        _handleSearchResult(result);
-        _updateDesignView(0, 'No results available for: ' + currentQuery);
-        _resetCurrentIndex();
-        _setTotalAmount();
-      }, function () {
-        renderer.renderNotFound('errorMsg', 'An error occured during the request!');
-        renderer.hide(designArea);
-        renderer.show(errorMsg);
-      });
+    searchBtn.addEventListener('click', function () {
+      _searchHandler();
+    });
+
+    searchField.addEventListener('keydown', function (keyEvent) {
+      if (keyEvent.keyCode === 13) {
+        _searchHandler();
+      }
+    });
+  };
+
+  var _searchHandler = function _searchHandler() {
+    offset = 0;
+    currentQuery = _handleAllQuery(searchField.value);
+    rating.addQuery(currentQuery);
+    searchField.value = '';
+    DesignRequests.getDesignsForQuery(currentQuery, offset, function (result) {
+      renderer.hide(_logo);
+      _handleSearchResult(result);
+      _updateDesignView(0, 'No results available for: ' + currentQuery);
+      _resetCurrentIndex();
+      _setTotalAmount();
+    }, function () {
+      renderer.renderNotFound('errorMsg', 'An error occured during the request!');
+      renderer.hide(designArea);
+      renderer.show(errorMsg);
     });
   };
 
@@ -511,6 +523,7 @@ var ViewDesigns = function (designRequests, renderer, rating) {
     _dislikeDesign();
     _setRatingSummery();
     _closeSummery();
+    _searchDesignKeyBinding();
   };
 
   return {

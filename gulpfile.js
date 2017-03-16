@@ -46,7 +46,7 @@ gulp.task('mv-js', () => {
         './src/js/main.js',
         './src/js/requester.js',
       ])
-      .pipe(concat('requester.js'))
+      .pipe(concat('app.js'))
       .pipe(babel({
           presets: ['es2015']
       }))

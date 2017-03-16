@@ -10,16 +10,17 @@ const ViewDesigns = (function(designRequests, renderer, rating){
   var currentPos = 1;
 
   // Dom elements
-  const searchField = document.getElementById('sendSearch');
+  const searchBtn = document.getElementById('sendSearch');
   const likeBtn = document.getElementById('like');
   const dislikeBtn = document.getElementById('dislike');
-  const nextBtn = document.getElementById("next");
+  const nextBtn = document.getElementById('next');
   const summeryContainer = document.getElementById('ratingSummeryContainer');
   const designArea = document.getElementById('currentDesign');
   const ratingBtns = document.getElementById('ratingBtns');
   const choosenRating = document.getElementById('choosenRating');
   const finishRatingBtn = document.getElementById('finishRating');
   const errorMsg = document.getElementById('errorMsg');
+  const searchField = document.getElementById('query');
   const _logo = document.getElementById('logo');
 
   const _handleAllQuery = (query) => {
@@ -30,21 +31,32 @@ const ViewDesigns = (function(designRequests, renderer, rating){
   }
 
   const _searchDesign = () => {
-    searchField.addEventListener('click', () => {
-      offset = 0;
-      currentQuery = _handleAllQuery(document.getElementById("query").value);
-      rating.addQuery(currentQuery);
-      DesignRequests.getDesignsForQuery(currentQuery, offset, (result) => {
-        renderer.hide(_logo);
-        _handleSearchResult(result);
-        _updateDesignView(0, 'No results available for: ' + currentQuery);
-        _resetCurrentIndex();
-        _setTotalAmount();
-      }, () => {
-        renderer.renderNotFound('errorMsg', 'An error occured during the request!');
-        renderer.hide(designArea);
-        renderer.show(errorMsg);
+    searchBtn.addEventListener('click', () => {
+      _searchHandler();
     });
+
+    searchField.addEventListener('keydown', (keyEvent) => {
+      if(keyEvent.keyCode === 13){
+        _searchHandler();
+      }
+    })
+  }
+
+  const _searchHandler = () => {
+    offset = 0;
+    currentQuery = _handleAllQuery(searchField.value);
+    rating.addQuery(currentQuery);
+    searchField.value = '';
+    DesignRequests.getDesignsForQuery(currentQuery, offset, (result) => {
+      renderer.hide(_logo);
+      _handleSearchResult(result);
+      _updateDesignView(0, 'No results available for: ' + currentQuery);
+      _resetCurrentIndex();
+      _setTotalAmount();
+    }, () => {
+      renderer.renderNotFound('errorMsg', 'An error occured during the request!');
+      renderer.hide(designArea);
+      renderer.show(errorMsg);
     });
   }
 
@@ -187,6 +199,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
     _dislikeDesign();
     _setRatingSummery();
     _closeSummery();
+    _searchDesignKeyBinding();
   }
 
   return {
