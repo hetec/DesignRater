@@ -93,6 +93,7 @@ var RatingService = function () {
   var _addQuery = function _addQuery(query) {
     if (!_queryExists(query)) {
       _ratingState[query] = {
+
         negative: [],
         positive: []
       };
