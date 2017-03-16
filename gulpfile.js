@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 // Plugins
 const del = require('gulp-delete-file'),
+      autoPrefixer = require('gulp-autoprefixer'),
       gulpIf = require('gulp-if')
       babel = require('gulp-babel');
       uglify = require('gulp-uglify');
@@ -22,6 +23,10 @@ const env = process.env.NODE_ENV || 'development';
 gulp.task('css', () => {
   gulp.src('./src/css/*.css')
       .pipe(concat('concat.css'))
+      .pipe(autoPrefixer({
+            browsers: ['last 4 versions'],
+            cascade: true
+      }))
       .pipe(gulpIf(env === 'production', cleanCSS({compatibility: 'ie8'})))
       .pipe(gulp.dest(destFolder + '/css/'))
       .pipe(browserSync.stream());
