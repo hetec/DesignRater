@@ -43,7 +43,7 @@ h1 {
   opacity: 0.9;
   color: white;
   text-align: center;
-  padding: 10px;
+  padding: 30px;
   font-size: 1em;
 }
 
@@ -77,10 +77,6 @@ section.searchBar input:focus {
   outline: none;
 }
 
-section.searchBar .searchBtn:hover {
-  background: rgb(0,184,169);
-}
-
 section.searchBar .searchBtn {
   width: 100%;
   height: 70px;
@@ -92,6 +88,7 @@ section.searchBar .searchBtn {
   border: none;
   border-bottom: 2px solid rgb(0,184,169);
   border-top: 2px solid rgb(0,184,169);
+  transition: all 300ms;
 }
 
 section.searchBar .searchBtn:hover {
@@ -115,6 +112,7 @@ section.searchBar .searchBtn:hover {
 
 .ratingBtns i {
   margin: 0 40px;
+  transition: all 300ms;
 }
 
 
@@ -135,7 +133,7 @@ section.searchBar .searchBtn:hover {
   height: 450px;
   position: relative;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(0);
 }
 
 .btnPanel {
@@ -197,6 +195,7 @@ section.searchBar .searchBtn:hover {
   position: relative;
   border: 2px solid #AAA;
   margin: 30px;
+  transition: all 300ms;
 }
 
 .roundBtn:hover {
@@ -217,6 +216,14 @@ section.searchBar .searchBtn:hover {
   border: 2px solid #AAA;
 }
 
+.roundBtn:disabled:hover .tooltip{
+  opacity: 0;
+}
+
+.roundBtn:focus {
+  outline: none;
+}
+
 /* summery */
 
 .ratingSummeryContainer {
@@ -226,17 +233,25 @@ section.searchBar .searchBtn:hover {
   right: 0;
   bottom: 0;
   background: white;
-  opacity: 0.99;
   overflow: scroll;
   padding-bottom: 100px;
+  padding: 10px;
 }
 
 .closeBtn {
   position: absolute;
-  right: 30px;
-  top: 20px;
-  font-size: 2em;
+  right: 10px;
+  top: 10px;
+  font-size: 1em;
   color: #AAA;
+  text-decoration: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.closeBtn > span {
+  margin-left: 10px;
 }
 
 .closeBtn:active, .closeBtn:visited {
@@ -248,9 +263,10 @@ section.searchBar .searchBtn:hover {
 }
 
 .ratingSummeryContainer h2 {
-  margin-top: 50px;
-  text-align: center;
+  font-size: 1em;
+  width: 100px;
   color: #AAA;
+  text-transform: uppercase;
 }
 
 .ratingSummeryContainer div {
@@ -261,6 +277,7 @@ section.searchBar .searchBtn:hover {
 .barGroup {
   width: 100%;
   position: relative;
+  animation: slideIn 1s;
 }
 
 .bar {
@@ -290,7 +307,7 @@ section.searchBar .searchBtn:hover {
 }
 
 .bar span {
-  font-size: 1em;
+  font-size: 0.6em;
   color: #AAA;
   position: relative;
   transform: translate(-50%, -50%);
@@ -346,4 +363,43 @@ section.searchBar .searchBtn:hover {
   top: 100px;
   transform: translateX(-50%);
   opacity: 0.3;
+}
+
+/* tool tip */
+
+.tooltip {
+  opacity: 0;
+}
+
+.usesToolTip:hover .tooltip{
+  opacity: 0.5;
+  font-size: 0.6em;
+  text-transform: uppercase;
+  position: relative;
+  top: -10px;
+  left: -25px;
+  display: inline-block;
+  background: black;
+  width: 100px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 10px;
+}
+
+@media (max-width: 360px) {
+  .barGroup > span {
+    font-size: 1em;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(-200px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
 }

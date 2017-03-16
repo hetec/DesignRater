@@ -385,20 +385,22 @@ var ViewDesigns = function (designRequests, renderer, rating) {
   };
 
   var _showRating = function _showRating() {
-    var design = currentDesigns[currentPos - 1].name;
-    if (rating.designRated(currentQuery, design)) {
-      renderer.hide(ratingBtns);
-      renderer.show(choosenRating);
-      _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].name);
-    } else {
-      renderer.hide(choosenRating);
-      renderer.show(ratingBtns);
+
+    var design = currentDesigns[currentPos - 1];
+    if (design) {
+      if (rating.designRated(currentQuery, design.id)) {
+        renderer.hide(ratingBtns);
+        renderer.show(choosenRating);
+        _setChoosenRating(currentQuery, design.id);
+      } else {
+        renderer.hide(choosenRating);
+        renderer.show(ratingBtns);
+      }
     }
   };
 
   var _likeDesign = function _likeDesign() {
     likeBtn.addEventListener('click', function () {
-      console.log(currentDesigns[currentPos - 1]);
       rating.like(currentQuery, currentDesigns[currentPos - 1].id);
       _setChoosenRating(currentQuery, currentDesigns[currentPos - 1].id);
       _showRatingBtn();
@@ -510,6 +512,7 @@ var ViewDesigns = function (designRequests, renderer, rating) {
           });
         } else {
           currentDesigns = [];
+          currentPos = 1;
           _updateDesignView(0, "No more designs available for this query");
         }
       }
@@ -523,7 +526,6 @@ var ViewDesigns = function (designRequests, renderer, rating) {
     _dislikeDesign();
     _setRatingSummery();
     _closeSummery();
-    _searchDesignKeyBinding();
   };
 
   return {
@@ -534,5 +536,5 @@ var ViewDesigns = function (designRequests, renderer, rating) {
 // Main
 
 Renderer.init();
-DesignRequests.init();
+DesignRequests.init({ limit: 500 });
 ViewDesigns.initHandlers();
