@@ -8,7 +8,8 @@ const del = require('gulp-delete-file'),
       cleanCSS = require('gulp-clean-css');
       concat = require('gulp-concat');
       browserSync = require('browser-sync').create();
-      plumber = require('gulp-plumber');;
+      clean = require('gulp-clean');
+      plumber = require('gulp-plumber');
 
 // vars
 
@@ -99,6 +100,10 @@ gulp.task('serve', ['html', 'css', 'mv-images', 'mv-js', 'mv-fonts', 'mv-font-aw
     server: destFolder,
     browser: 'google chrome'
   })
+})
+
+gulp.task('cleanAll', () => {
+  gulp.src('./docs', {read: false}).pipe(clean());
 })
 
 // Default task ran if we call 'gulp'
