@@ -379,8 +379,8 @@ section.searchBar .searchBtn:hover {
   opacity: 0.5;
   font-size: 0.6em;
   text-transform: uppercase;
-  position: relative;
-  top: -10px;
+  position: absolute;
+  top: -25px;
   left: -25px;
   display: inline-block;
   background: black;
@@ -388,6 +388,7 @@ section.searchBar .searchBtn:hover {
   height: 20px;
   line-height: 20px;
   border-radius: 10px;
+  z-index: 100
 }
 
 /* Spinner */
