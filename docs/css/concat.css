@@ -190,7 +190,7 @@ section.searchBar .searchBtn:hover {
 .designImagePos {
   position: absolute;
   left: 50%;
-  top: 100px;
+  top: 120px;
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
