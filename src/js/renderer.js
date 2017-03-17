@@ -58,6 +58,10 @@ const Renderer = (() => {
     }
   };
 
+  const cb = () => {
+    _hide(document.getElementById(_spinnerId));
+  }; 
+
   const _imageLoaded = (preLoadImage) => {
     if(preLoadImage.complete){
       cb();
@@ -68,9 +72,7 @@ const Renderer = (() => {
           _show(document.getElementById(_spinnerId));
         }
       }, 500);
-      preLoadImage.onload = () => {
-        _hide(document.getElementById(_spinnerId));
-      }; 
+      preLoadImage.onload = cb;
     }
   };
 

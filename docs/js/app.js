@@ -239,6 +239,10 @@ var Renderer = function () {
     }
   };
 
+  var cb = function cb() {
+    _hide(document.getElementById(_spinnerId));
+  };
+
   var _imageLoaded = function _imageLoaded(preLoadImage) {
     if (preLoadImage.complete) {
       cb();
@@ -249,9 +253,7 @@ var Renderer = function () {
           _show(document.getElementById(_spinnerId));
         }
       }, 500);
-      preLoadImage.onload = function () {
-        _hide(document.getElementById(_spinnerId));
-      };
+      preLoadImage.onload = cb;
     }
   };
 
