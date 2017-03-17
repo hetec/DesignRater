@@ -20,6 +20,7 @@
     "gulp-if": "^2.0.2",
     "gulp-jade": "^1.1.0",
     "gulp-open": "^2.0.0",
+    "gulp-plumber": "^1.1.0",
     "gulp-run-sequence": "^0.3.2",
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^2.1.0",

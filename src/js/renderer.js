@@ -4,11 +4,12 @@
  * Provides methods to create and alter view elements
  */
 
-const Renderer = (function() {
+const Renderer = (() => {
 
   let _ratingSummeryId;
   let _designContainerId;
   let _designImgClass;
+  let _designImgPos;
   let _queryNameClass;
   let _totalRatingsClass;
   let _barGroupClass
@@ -19,12 +20,14 @@ const Renderer = (function() {
   let _posRatingBtnContent;
   let _negRatingBtnContent;
   let _maxBarWidth;
+  let _spinnerId;
 
   const _init = (config) => {
     config = config || {};
     _ratingSummeryId = config.ratingSummeryId || 'ratingSummery';
     _designContainerId = config.designContainerId || 'designContainer';
     _designImgClass = config.designImgClass || 'designImage';
+    _designImgPos = config.designImgPos || 'designImagePos';
     _queryNameClass = config.queryNameClass || 'queryName';
     _totalRatingsClass = config.totalRatingsClass || 'totalRatings';
     _barGroupClass = config.barGroupClass || 'barGroup';
@@ -34,47 +37,60 @@ const Renderer = (function() {
     _hideClass = config.hideClass || 'hide';
     _posRatingBtnContent = config.posRatingBtnContent || '<i class="fa fa-thumbs-up" aria-hidden="true"></i>';
     _negRatingBtnContent = config.negRatingBtnContent || '<i class="fa fa-thumbs-down" aria-hidden="true"></i>';
+    _spinnerId = config.spinnerId || 'imgSpinner';
     _maxBarWidth = config.maxBarWidth || 300;
-  }
+  };
 
-  const _render = (containerId, content) => {
-    let container = document.getElementById(containerId);
-    let currentContainerContent = document.getElementById(_designContainerId);
-    let designContainer = document.createElement('div');
-    designContainer.id = _designContainerId;
-    designContainer.classList.add(_designContainerId);
-    designContainer.innerHTML = content;
-    container.replaceChild(designContainer, currentContainerContent);
-  }
+  const _renderDesign = (design) => {
+    const preLoadImage = new Image();
+    preLoadImage.src = design.imageUrl;
+    preLoadImage.alt = design.name;
+    preLoadImage.classList.add(_designImgClass, _designImgPos);
 
-  const _renderDesign = (containerId, design) => {
-    const content = 
-      '<img src="' + design.imageUrl 
-      + '" alt="' + design.name
-      + '" class=' + _designImgClass + '>';
-    _render(containerId, content);
-  }
+    _imageLoaded(preLoadImage);
+
+    const designContainer = document.getElementById(_designContainerId);
+    const designImage = designContainer.querySelector('img');
+    if(designImage) {
+      designContainer.replaceChild(preLoadImage, designImage);
+    }else {
+      designContainer.appendChild(preLoadImage);
+    }
+  };
+
+  const _imageLoaded = (preLoadImage) => {
+    if(preLoadImage.complete){
+      cb();
+      preLoadImage.onload = () => {};
+    } else {
+      setTimeout(() => {
+        if(!preLoadImage.complete){
+          _show(document.getElementById(_spinnerId));
+        }
+      }, 500);
+      preLoadImage.onload = () => {
+        _hide(document.getElementById(_spinnerId));
+      }; 
+    }
+  };
 
   const _renderNotFound = (containerId, msg) => {
-    let container = document.getElementById(containerId);
+    let container = document.getElementById(containerId);;
     container.innerHTML = msg;
-  }
+  };
 
   const _renderRatingSummery = (ratings) => {
     for (let rating in ratings) {
       document.getElementById(_ratingSummeryId).appendChild(_renderSingleRating(ratings[rating], rating));
     }
-  }
+  };
 
   const _clearRatingSummery = () => {
-    document.getElementById('ratingSummery').innerHTML = "";
-  }
+    document.getElementById(_ratingSummeryId).innerHTML = "";
+  };
 
   const _renderSingleRating = (queryRating, queryName) => {
     let totalOfQuery = queryRating.positive.length + queryRating.negative.length;
-
-    console.log('total', totalOfQuery);
-
     let ratingResult = document.createElement('div');
     let totalNumber = document.createElement('span');
     let query = document.createElement('span');
@@ -93,7 +109,7 @@ const Renderer = (function() {
       queryRating.negative.length, totalOfQuery, _negRatingBtnContent));
 
     return ratingResult;
-  }
+  };
 
   const _renderRatingBar = (numberOfRatings, totalRatings, labelContent) => {
     let maxWidth = _maxBarWidth;
@@ -123,21 +139,21 @@ const Renderer = (function() {
     barGroup.appendChild(bar);
 
     return barGroup;
-  }
+  };
 
   const _hide = (element) => {
     const classList = element.classList;
     if(!classList.contains(_hideClass)){
       classList.add(_hideClass);
     }
-  }
+  };
 
   const _show = (element) => {
     const classList = element.classList;
     if(classList.contains(_hideClass)){
       classList.remove(_hideClass);
     }
-  }
+  };
 
   return {
     renderDesign: _renderDesign,

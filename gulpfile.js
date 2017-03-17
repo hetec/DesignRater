@@ -8,6 +8,7 @@ const del = require('gulp-delete-file'),
       cleanCSS = require('gulp-clean-css');
       concat = require('gulp-concat');
       browserSync = require('browser-sync').create();
+      plumber = require('gulp-plumber');;
 
 // vars
 
@@ -22,6 +23,7 @@ const env = process.env.NODE_ENV || 'development';
 // css
 gulp.task('css', () => {
   gulp.src('./src/css/*.css')
+      .pipe(plumber())
       .pipe(concat('concat.css'))
       .pipe(autoPrefixer({
             browsers: ['last 4 versions'],
@@ -52,6 +54,7 @@ gulp.task('mv-js', () => {
         './src/js/requester.js',
         './src/js/main.js'
       ])
+      .pipe(plumber())
       .pipe(concat('app.js'))
       .pipe(babel({
           presets: ['es2015']

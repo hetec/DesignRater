@@ -172,13 +172,17 @@ section.searchBar .searchBtn:hover {
   background-position: center;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .designImage {
   width: 120px;
-  position: relative;
+}
+
+.designImagePos {
+  position: absolute;
   left: 50%;
-  top: 120px;
+  top: 100px;
   transform: translateX(-50%);
 }
 
@@ -386,13 +390,37 @@ section.searchBar .searchBtn:hover {
   border-radius: 10px;
 }
 
-@media (max-width: 360px) {
-  .barGroup > span {
-    font-size: 1em;
-    width: 30px;
-    height: 30px;
-  }
+/* Spinner */
+
+.imgSpinner {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  left: 50%;
+  top: 120px;
+  margin-left: -40px;
+  border-radius: 50%;
+  transform-origin: center;
+  animation: spinner 1s infinite linear;
 }
+
+.imgSpinner:after, .imgSpinner:before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgb(109,177,166);
+  left: 50%;
+  margin-left: -7.5px;
+}
+
+.imgSpinner:before {
+  top: 100%;
+  margin-top: -15px;
+}
+
+/* keyframes */
 
 @keyframes slideIn {
   0% {
@@ -400,6 +428,25 @@ section.searchBar .searchBtn:hover {
     opacity: 0;
   }
   100% {
-    opacity: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Adjust summery for small devices */
+
+@media (max-width: 360px) {
+  .barGroup > span {
+    font-size: 1em;
+    width: 30px;
+    height: 30px;
   }
 }

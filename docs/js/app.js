@@ -45,7 +45,7 @@ var Requester = function () {
 /**
  * DesignRequests Module
  * 
- * Provides methods to interact with the designs endpoint of
+ * Provides methods to interact with the design endpoint of
  * spreadshirts REST api
  */
 
@@ -140,8 +140,6 @@ var RatingService = function () {
 
   var _like = function _like(query, design) {
     if (!_designRated(query, design) && _queryExists(query)) {
-      console.log('design', design);
-
       _ratingState[query][_positiveRatesArrayName].push(design);
     }
   };
@@ -192,6 +190,7 @@ var Renderer = function () {
   var _ratingSummeryId = void 0;
   var _designContainerId = void 0;
   var _designImgClass = void 0;
+  var _designImgPos = void 0;
   var _queryNameClass = void 0;
   var _totalRatingsClass = void 0;
   var _barGroupClass = void 0;
@@ -202,12 +201,14 @@ var Renderer = function () {
   var _posRatingBtnContent = void 0;
   var _negRatingBtnContent = void 0;
   var _maxBarWidth = void 0;
+  var _spinnerId = void 0;
 
   var _init = function _init(config) {
     config = config || {};
     _ratingSummeryId = config.ratingSummeryId || 'ratingSummery';
     _designContainerId = config.designContainerId || 'designContainer';
     _designImgClass = config.designImgClass || 'designImage';
+    _designImgPos = config.designImgPos || 'designImagePos';
     _queryNameClass = config.queryNameClass || 'queryName';
     _totalRatingsClass = config.totalRatingsClass || 'totalRatings';
     _barGroupClass = config.barGroupClass || 'barGroup';
@@ -217,26 +218,45 @@ var Renderer = function () {
     _hideClass = config.hideClass || 'hide';
     _posRatingBtnContent = config.posRatingBtnContent || '<i class="fa fa-thumbs-up" aria-hidden="true"></i>';
     _negRatingBtnContent = config.negRatingBtnContent || '<i class="fa fa-thumbs-down" aria-hidden="true"></i>';
+    _spinnerId = config.spinnerId || 'imgSpinner';
     _maxBarWidth = config.maxBarWidth || 300;
   };
 
-  var _render = function _render(containerId, content) {
-    var container = document.getElementById(containerId);
-    var currentContainerContent = document.getElementById(_designContainerId);
-    var designContainer = document.createElement('div');
-    designContainer.id = _designContainerId;
-    designContainer.classList.add(_designContainerId);
-    designContainer.innerHTML = content;
-    container.replaceChild(designContainer, currentContainerContent);
+  var _renderDesign = function _renderDesign(design) {
+    var preLoadImage = new Image();
+    preLoadImage.src = design.imageUrl;
+    preLoadImage.alt = design.name;
+    preLoadImage.classList.add(_designImgClass, _designImgPos);
+
+    _imageLoaded(preLoadImage);
+
+    var designContainer = document.getElementById(_designContainerId);
+    var designImage = designContainer.querySelector('img');
+    if (designImage) {
+      designContainer.replaceChild(preLoadImage, designImage);
+    } else {
+      designContainer.appendChild(preLoadImage);
+    }
   };
 
-  var _renderDesign = function _renderDesign(containerId, design) {
-    var content = '<img src="' + design.imageUrl + '" alt="' + design.name + '" class=' + _designImgClass + '>';
-    _render(containerId, content);
+  var _imageLoaded = function _imageLoaded(preLoadImage) {
+    if (preLoadImage.complete) {
+      cb();
+      preLoadImage.onload = function () {};
+    } else {
+      setTimeout(function () {
+        if (!preLoadImage.complete) {
+          _show(document.getElementById(_spinnerId));
+        }
+      }, 500);
+      preLoadImage.onload = function () {
+        _hide(document.getElementById(_spinnerId));
+      };
+    }
   };
 
   var _renderNotFound = function _renderNotFound(containerId, msg) {
-    var container = document.getElementById(containerId);
+    var container = document.getElementById(containerId);;
     container.innerHTML = msg;
   };
 
@@ -247,14 +267,11 @@ var Renderer = function () {
   };
 
   var _clearRatingSummery = function _clearRatingSummery() {
-    document.getElementById('ratingSummery').innerHTML = "";
+    document.getElementById(_ratingSummeryId).innerHTML = "";
   };
 
   var _renderSingleRating = function _renderSingleRating(queryRating, queryName) {
     var totalOfQuery = queryRating.positive.length + queryRating.negative.length;
-
-    console.log('total', totalOfQuery);
-
     var ratingResult = document.createElement('div');
     var totalNumber = document.createElement('span');
     var query = document.createElement('span');
@@ -448,7 +465,7 @@ var ViewDesigns = function (designRequests, renderer, rating) {
     if (currentDesigns.length > 0) {
       var currentDesign = currentDesigns[currentPos];
       var design = Design(currentDesign.id, currentDesign.name, currentDesign.resources[0].href);
-      renderer.renderDesign('currentDesign', design);
+      renderer.renderDesign(design);
       _setCurrentIndex();
       renderer.show(finishRatingBtn);
       renderer.show(designArea);
@@ -501,7 +518,7 @@ var ViewDesigns = function (designRequests, renderer, rating) {
   };
 
   var _nextDesign = function _nextDesign() {
-    nextBtn.addEventListener("click", function () {
+    nextBtn.addEventListener('click', function () {
       if (currentPos < currentDesigns.length) {
         _updateDesignView(currentPos);
         currentPos++;
@@ -518,7 +535,7 @@ var ViewDesigns = function (designRequests, renderer, rating) {
         } else {
           currentDesigns = [];
           currentPos = 1;
-          _updateDesignView(0, "No more designs available for this query");
+          _updateDesignView(0, 'No more designs available for this query');
         }
       }
     });

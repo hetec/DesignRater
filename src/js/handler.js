@@ -1,6 +1,6 @@
 // Handler Module
 
-const ViewDesigns = (function(designRequests, renderer, rating){
+const ViewDesigns = ((designRequests, renderer, rating) => {
 
   let offset = 0;
   let currentQuery = '';
@@ -28,7 +28,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
       query = 'all';
     }
     return query;
-  }
+  };
 
   const _searchDesign = () => {
     searchBtn.addEventListener('click', () => {
@@ -40,7 +40,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
         _searchHandler();
       }
     })
-  }
+  };
 
   const _searchHandler = () => {
     offset = 0;
@@ -58,7 +58,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
       renderer.hide(designArea);
       renderer.show(errorMsg);
     });
-  }
+  };
 
   const _showRating = () => {
     
@@ -73,7 +73,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
         renderer.show(ratingBtns);
       }
     }
-  }
+  };
 
   const _likeDesign = () => {
     likeBtn.addEventListener('click', () => {
@@ -83,7 +83,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
       renderer.hide(ratingBtns);
       renderer.show(choosenRating);
     });
-  }
+  };
 
   const _dislikeDesign = () => {
     document.getElementById('dislike').addEventListener('click', () => {
@@ -93,7 +93,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
       renderer.hide(ratingBtns);
       renderer.show(choosenRating);
     });
-  }
+  };
 
   const _setChoosenRating = (query, design) => {
     let choosenRatingValue = rating.getRatingForDesign(query, design);
@@ -102,24 +102,24 @@ const ViewDesigns = (function(designRequests, renderer, rating){
     } else {
       choosenRating.innerHTML = '<i class="fa fa-thumbs-down" aria-hidden="true"></i>';
     }
-  }
+  };
 
   const _handleSearchResult = (result) => {
     currentDesigns = result.designs;
     total = result.count;
-  }
+  };
 
   const _showRatingBtn = () => {
     if (!rating.nothingRated()){
       finishRatingBtn.disabled = false;
     }
-  }
+  };
 
   const _updateDesignView = (currentPos, msgForNoDesigns) => {
     if(currentDesigns.length > 0) { 
       let currentDesign = currentDesigns[currentPos];
       let design = Design(currentDesign.id, currentDesign.name, currentDesign.resources[0].href)
-      renderer.renderDesign('currentDesign', design);
+      renderer.renderDesign(design);
       _setCurrentIndex();
       renderer.show(finishRatingBtn);
       renderer.show(designArea);
@@ -131,7 +131,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
       renderer.hide(designArea);
       renderer.show(errorMsg);
     }
-  }
+  };
 
   const _setRatingSummery = () => {
     finishRatingBtn.addEventListener('click', () => {
@@ -139,7 +139,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
       renderer.hide(finishRatingBtn);
       renderer.renderRatingSummery(rating.getRatings());
     });
-  }
+  };
 
   const _closeSummery = () => {
     document.getElementById('closeSummery').addEventListener('click', () => {
@@ -151,28 +151,28 @@ const ViewDesigns = (function(designRequests, renderer, rating){
       renderer.show(_logo);
       finishRatingBtn.disabled = true;
     });
-  }
+  };
 
   const _setTotalAmount = () => {
     document.getElementById('totalAmount').innerHTML = total;
-  }
+  };
 
   const _setCurrentIndex = () => {
     document.getElementById('currentIndex').innerHTML = currentIndex;
     currentIndex++;
-  }
+  };
 
   const _resetCurrentIndex = () => {
     currentIndex = 1
     _setCurrentIndex();
-  }
+  };
 
   const _nextDesignsAvailable = () => {
     return offset + currentDesigns.length < total;
-  }
+  };
 
   const _nextDesign = () => {
-    nextBtn.addEventListener("click", () => {
+    nextBtn.addEventListener('click', () => {
       if(currentPos < currentDesigns.length){
         _updateDesignView(currentPos);
         currentPos++;
@@ -189,11 +189,11 @@ const ViewDesigns = (function(designRequests, renderer, rating){
         }else {
           currentDesigns = [];
           currentPos = 1;
-          _updateDesignView(0, "No more designs available for this query");
+          _updateDesignView(0, 'No more designs available for this query');
         }
       }
     });
-  }
+  };
 
   const initHandlers = () => {
     _searchDesign();
@@ -202,7 +202,7 @@ const ViewDesigns = (function(designRequests, renderer, rating){
     _dislikeDesign();
     _setRatingSummery();
     _closeSummery();
-  }
+  };
 
   return {
     initHandlers: initHandlers
